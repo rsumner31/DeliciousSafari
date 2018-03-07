@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "DXDeliciousDatabase.h"
 
-@interface DXTagMenuController : NSObject <NSMenuDelegate> {
+@interface DXTagMenuController : NSObject {
 	NSMenu *mMenu;
 	int mMenuIndex;
 	DXDeliciousDatabase *mDatabase;

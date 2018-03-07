@@ -9,8 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface DXSafariBookmarkDataSource : NSObject <NSOutlineViewDataSource> {
-	NSDictionary *safariBookmarksDict;
+@interface DXSafariBookmarkDataSource : NSObject {
+	NSMutableDictionary *safariBookmarksDict;
 }
 
 -(NSString*)titleForItem:(id)item;

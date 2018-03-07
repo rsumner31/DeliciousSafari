@@ -36,11 +36,8 @@ static NSString* SHA1FilenameFromKey(NSString *url);
 		}
 		else
 		{
-            NSError* error = nil;
-            if(![fm createDirectoryAtPath:dsAppDirPath withIntermediateDirectories:YES attributes:nil error:&error])
-            {
-				NSLog(@"Could not create DeliciousSafari application support database directory at path (%@). %@", dsAppDirPath, error);
-            }
+			if(![fm createDirectoryAtPath:dsAppDirPath attributes:nil])
+				NSLog(@"Could not create DeliciousSafari application support database directory at path (%@).", dsAppDirPath);
 		}
 		
 		NSString *faviconDatabasePath = [dsAppDirPath stringByAppendingPathComponent:@"Favicon Database"];
@@ -71,10 +68,9 @@ static NSString* SHA1FilenameFromKey(NSString *url);
 		}
 		else
 		{
-            NSError* error = nil;
-            if(![fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error])
+			if(![fm createDirectoryAtPath:path attributes:nil])
 			{
-				NSLog(@"Could not create favicon database directory at path (%@). %@", path, error);
+				NSLog(@"Could not create favicon database directory at path (%@).", path);
 				goto bail;
 			}
 		}

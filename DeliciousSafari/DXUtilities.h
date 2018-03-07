@@ -24,6 +24,10 @@
 
 //- (BOOL)isFunctionInCallstack:(const char*)function;
 
+#ifdef DELICIOUSSAFARI_PLUGIN_TARGET
+- (BOOL)isLeopardOrLater;
+#endif
+
 -(NSString*)applicationSupportPath;
 
 @end

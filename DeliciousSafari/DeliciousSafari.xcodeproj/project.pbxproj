@@ -43,6 +43,7 @@
 		91201B26104F924D00CA3FE9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		91201B56104F976900CA3FE9 /* DSUninstaller in CopyFiles */ = {isa = PBXBuildFile; fileRef = 91201AFD104F8DE500CA3FE9 /* DSUninstaller */; };
 		91201B8C104F9BDC00CA3FE9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91201B8A104F9BDC00CA3FE9 /* MainMenu.xib */; };
+		91291E340CA22189005C7299 /* LicenseCheck.c in Sources */ = {isa = PBXBuildFile; fileRef = 91291E330CA22189005C7299 /* LicenseCheck.c */; };
 		91291E730CA22842005C7299 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 91291E720CA22842005C7299 /* libcrypto.dylib */; };
 		913306760E6517E5006DBDB0 /* DXFaviconDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 917F15A20E586401007EC254 /* DXFaviconDatabase.m */; };
 		91334590104B3438004AD5AD /* DeliciousSafari Addition.r in Rez */ = {isa = PBXBuildFile; fileRef = 911911A6104B19C2009A4427 /* DeliciousSafari Addition.r */; };
@@ -95,6 +96,7 @@
 		91C627AC0DBD988C00864591 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91C627AB0DBD988C00864591 /* ApplicationServices.framework */; };
 		91D835FC0DDD364E006989A2 /* NSString+DXTruncatedStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 91D835FB0DDD364E006989A2 /* NSString+DXTruncatedStrings.m */; };
 		91E211310C605D9300C45E85 /* DeliciousAPITester_main.m in Sources */ = {isa = PBXBuildFile; fileRef = 91E2112E0C605D9300C45E85 /* DeliciousAPITester_main.m */; };
+		91E211320C605D9300C45E85 /* DeliciousAPITester-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 91E2112F0C605D9300C45E85 /* DeliciousAPITester-Info.plist */; };
 		91E211330C605D9300C45E85 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 91E211300C605D9300C45E85 /* MainMenu.nib */; };
 		91E211420C60606100C45E85 /* TesterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 91E211410C60606100C45E85 /* TesterController.m */; };
 		91E2BDB30C97D361005D94D4 /* url.png in Resources */ = {isa = PBXBuildFile; fileRef = 91E2BDB20C97D361005D94D4 /* url.png */; };
@@ -260,6 +262,8 @@
 		91201AFD104F8DE500CA3FE9 /* DSUninstaller */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSUninstaller; sourceTree = BUILT_PRODUCTS_DIR; };
 		91201B05104F8E5800CA3FE9 /* DSUninstaller-main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DSUninstaller-main.m"; sourceTree = "<group>"; };
 		91201B8B104F9BDC00CA3FE9 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Uninstall/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		91291E330CA22189005C7299 /* LicenseCheck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LicenseCheck.c; sourceTree = "<group>"; };
+		91291E390CA221A1005C7299 /* LicenseCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseCheck.h; sourceTree = "<group>"; };
 		91291E720CA22842005C7299 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = /usr/lib/libcrypto.dylib; sourceTree = "<absolute>"; };
 		913344D6104B1CDC004AD5AD /* Test Script.applescript */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.applescript; path = "Test Script.applescript"; sourceTree = "<group>"; };
 		9139D6B70DD94D0A002CA42C /* MethodSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MethodSwizzle.h; sourceTree = "<group>"; };
@@ -329,7 +333,6 @@
 		91BCDE8E104F73BC005F99B2 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		91BCDE92104F73C4005F99B2 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		91BF33710C9375EF00917983 /* small-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "small-logo.png"; sourceTree = "<group>"; };
-		91C1D33C19BA682000D4E740 /* requirements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = requirements.plist; path = installer/requirements.plist; sourceTree = "<group>"; };
 		91C627AB0DBD988C00864591 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		91D835FA0DDD364E006989A2 /* NSString+DXTruncatedStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DXTruncatedStrings.h"; sourceTree = "<group>"; };
 		91D835FB0DDD364E006989A2 /* NSString+DXTruncatedStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DXTruncatedStrings.m"; sourceTree = "<group>"; };
@@ -430,7 +433,6 @@
 				91449C871049FA0D00F3DD5C /* Agent */,
 				08FB77AFFE84173DC02AAC07 /* Plugin */,
 				91189283104AE26E0012655A /* Scripting Addition */,
-				91C1D33F19BA68B700D4E740 /* Installer */,
 				916695CF104E22AA0066F5EC /* Uninstall */,
 				91DD694A0C60436D002C8D34 /* DeliciousAPITester */,
 				919EEDE513E902620098F974 /* ASHelper */,
@@ -516,6 +518,8 @@
 			isa = PBXGroup;
 			children = (
 				9194B7040DE283E100B66668 /* DeliciousSafari_Prefix.pch */,
+				91291E330CA22189005C7299 /* LicenseCheck.c */,
+				91291E390CA221A1005C7299 /* LicenseCheck.h */,
 				9139D6B70DD94D0A002CA42C /* MethodSwizzle.h */,
 				9139D6B80DD94D39002CA42C /* MethodSwizzle.m */,
 			);
@@ -660,14 +664,6 @@
 				919EEDE613E902620098F974 /* main.m */,
 			);
 			path = ASHelper;
-			sourceTree = "<group>";
-		};
-		91C1D33F19BA68B700D4E740 /* Installer */ = {
-			isa = PBXGroup;
-			children = (
-				91C1D33C19BA682000D4E740 /* requirements.plist */,
-			);
-			name = Installer;
 			sourceTree = "<group>";
 		};
 		91DD693F0C604346002C8D34 /* Classes */ = {
@@ -889,7 +885,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0410;
 			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "DeliciousSafari" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -994,6 +990,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91E211320C605D9300C45E85 /* DeliciousAPITester-Info.plist in Resources */,
 				91E211330C605D9300C45E85 /* MainMenu.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1025,7 +1022,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/bin/sdp -fa -o \"${SRCROOT}/Scripting Addition/DeliciousSafari Addition.r\" \"${SRCROOT}/Scripting Addition/DeliciousSafari Addition.sdef\"";
+			shellScript = "# This rule builds an 'aete' version of the sdef; it is only necessary for pre-Leopard builds.\n/usr/bin/sdp -fa -o \"${SRCROOT}/Scripting Addition/DeliciousSafari Addition.r\" \"${SRCROOT}/Scripting Addition/DeliciousSafari Addition.sdef\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1037,6 +1034,7 @@
 				9193FECE0C5EF0EC0083E0B1 /* DXDeliciousMenuItem.m in Sources */,
 				91A408360C5D1F6300C9E539 /* DXDeliciousExtender.m in Sources */,
 				91050B0D0C93C6270047FC30 /* DXFavoritesDataSource.m in Sources */,
+				91291E340CA22189005C7299 /* LicenseCheck.c in Sources */,
 				9185035F0CAA12A500026B0D /* DXUtilities.m in Sources */,
 				91A22DB90D2CC54000BC00CE /* DXSafariBookmarkDataSource.m in Sources */,
 				91E9E6110D31A98900128875 /* DXButtonIconCell.m in Sources */,
@@ -1202,9 +1200,8 @@
 		1DEB913B08733D840010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 143;
+				CURRENT_PROJECT_VERSION = 132;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -1222,8 +1219,11 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_GROUP = wheel;
+				INSTALL_OWNER = root;
 				INSTALL_PATH = /Library/InputManagers/DeliciousSafari;
 				PRODUCT_NAME = DeliciousSafari;
+				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1232,8 +1232,7 @@
 		1DEB913C08733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 143;
+				CURRENT_PROJECT_VERSION = 132;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
@@ -1250,8 +1249,11 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_GROUP = wheel;
+				INSTALL_OWNER = root;
 				INSTALL_PATH = /Library/InputManagers/DeliciousSafari;
 				PRODUCT_NAME = DeliciousSafari;
+				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1260,13 +1262,10 @@
 		1DEB913F08733D840010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
@@ -1279,22 +1278,18 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
@@ -1307,8 +1302,7 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				SDKROOT = macosx;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 			};
 			name = Release;
 		};
@@ -1316,7 +1310,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -1334,7 +1327,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
@@ -1378,7 +1370,6 @@
 		913345FB104B41FE004AD5AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1389,7 +1380,6 @@
 		913345FC104B41FE004AD5AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				PRODUCT_NAME = all;
@@ -1401,7 +1391,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -1425,7 +1414,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
@@ -1449,7 +1437,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -1472,7 +1459,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
@@ -1495,6 +1481,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1509,6 +1496,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -1516,6 +1504,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1524,13 +1513,13 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		91DD69F40C605B63002C8D34 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -1555,7 +1544,6 @@
 		91DD69F50C605B63002C8D34 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;

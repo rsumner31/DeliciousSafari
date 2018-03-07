@@ -15,7 +15,7 @@
 	NSEnumerator *mItemEnumerator;
 	NSMutableDictionary *mFaviconResults;
 	NSMutableArray *mFaviconFailures;
-    dispatch_semaphore_t mThreadWaitSemaphore;
+	MPSemaphoreID mThreadWaitSemaphore;
 	unsigned mRunningThreadCount;
 	unsigned mSuccessfulDownloadCount;
 	

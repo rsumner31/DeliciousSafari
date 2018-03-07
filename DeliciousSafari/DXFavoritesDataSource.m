@@ -28,7 +28,7 @@
 
 - (id)tableView:(NSTableView *)aTableView
     objectValueForTableColumn:(NSTableColumn *)aTableColumn
-			row:(NSInteger)rowIndex
+			row:(int)rowIndex
 {
 	NSParameterAssert(rowIndex >= 0 && rowIndex < (int)[records count]);
 	NSArray *tagArray = [records objectAtIndex:rowIndex];

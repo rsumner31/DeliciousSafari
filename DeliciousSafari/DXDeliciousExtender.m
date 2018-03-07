@@ -19,6 +19,8 @@
 
 void DXLoadPlugin(void);
 
+static BOOL checkLicense(NSString *email, NSString *licenseKey);
+
 static void my_SCNetworkReachabilityCallBack(SCNetworkReachabilityRef target,
 											 SCNetworkConnectionFlags flags,
 											 void *info);
@@ -150,43 +152,15 @@ static const unsigned kMaxExtendedDescriptionLength = 1000;
 {
 	if([super init])
 	{
-        deliciousSafariBundle = [[NSBundle bundleWithIdentifier:@"com.delicioussafari.DeliciousSafari"] retain];
-        
-        id shortVersion = @"0.9"; // Never used. If this ever occurs, there is some sort of problem.
-        id bundleVersion = @"000";
-        deliciousSafariBundle = [[NSBundle bundleWithIdentifier:@"com.delicioussafari.DeliciousSafari"] retain];
-        if(deliciousSafariBundle)
-        {
-            // Get image resources for the menus.
-            NSString* path = [deliciousSafariBundle pathForImageResource:@"url"];
-            if(path)
-                urlImage = [[NSImage alloc] initWithContentsOfFile:path];
-            
-            path = [deliciousSafariBundle pathForImageResource:@"toolbaritem"];
-            if(path)
-                toolbarItemImage = [[NSImage alloc] initWithContentsOfFile:path];
-            
-            // Get the version number from the Info.plist file.
-            id tmpBundleVersion = [deliciousSafariBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
-            if(tmpBundleVersion != nil)
-                bundleVersion = tmpBundleVersion;
-            
-            // Get the build number from the Info.plist file.
-            id tmpShortVersion = [deliciousSafariBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-            if(tmpShortVersion != nil)
-                shortVersion = tmpShortVersion;
-        }
-        
-        if ([deliciousSafariBundle loadNibNamed:@"DXExtenderResources" owner:self topLevelObjects:&deliciousSafariBundleTopLevelObjects])
+		if([NSBundle loadNibNamed:@"DXExtenderResources" owner:self])
 		{
-            // prevent top level objects from deallocating.
-            [deliciousSafariBundleTopLevelObjects retain];
-            
 			mCurrentSheet = nil;
 			mIsDeliciousMenuAdded = NO;
 			
 			mDB = [[DXDeliciousDatabase defaultDatabase] retain];
 			[self upgradeOldDatabaseIfNecessary];
+			
+			isLicenseValid = checkLicense([mDB registrationEmailAddress], [mDB registrationLicenseKey]);
 			
 			[loginWindowUserRegistrationLink setURL:[NSURL URLWithString:@"https://secure.delicious.com/register"]];
 			[loginWindowUserRegistrationLink setDelegate:self];
@@ -197,24 +171,53 @@ static const unsigned kMaxExtendedDescriptionLength = 1000;
 			// NSTableView maintains a weak reference to its data source, so don't autorelease it.
 			favoritesDataSource = [[DXFavoritesDataSource alloc] initWithTags:[mDB favoriteTags]];
 			[favoriteTagsTable setDataSource:favoritesDataSource];
-            
-            
-            NSString *versionFormat = DXLocalizedString(@"Version %@ (%@)",
-                                                        @"Version number format string. First argument is short version and second is bundle version.");
-            [aboutWindowVersion setStringValue:[NSString stringWithFormat:versionFormat, shortVersion, bundleVersion]];
-            
 			
-            NSBundle *coreTypesBundle = [NSBundle bundleWithPath:@"/System/Library/CoreServices/CoreTypes.bundle"];
-            
-            if(coreTypesBundle != nil)
-            {
-                NSString *path = [coreTypesBundle pathForImageResource:@"GenericFolderIcon"];
-                if(path)
-                {
-                    folderImage = [[NSImage alloc] initWithContentsOfFile:path];
-                    [folderImage setSize:NSMakeSize(16, 16)];
-                }
-            }
+	
+			id shortVersion = @"0.9"; // Never used. If this ever occurs, there is some sort of problem.
+			id bundleVersion = @"000";
+			deliciousSafariBundle = [[NSBundle bundleWithIdentifier:@"com.delicioussafari.DeliciousSafari"] retain];
+			if(deliciousSafariBundle)
+			{
+				// Get image resources for the menus.				
+				NSString* path = [deliciousSafariBundle pathForImageResource:@"url"];
+				if(path)
+					urlImage = [[NSImage alloc] initWithContentsOfFile:path];
+				
+				path = [deliciousSafariBundle pathForImageResource:@"toolbaritem"];
+				if(path)
+					toolbarItemImage = [[NSImage alloc] initWithContentsOfFile:path];
+								
+				// Get the version number from the Info.plist file.
+				id tmpBundleVersion = [deliciousSafariBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+				if(tmpBundleVersion != nil)
+					bundleVersion = tmpBundleVersion;
+				
+				// Get the build number from the Info.plist file.
+				id tmpShortVersion = [deliciousSafariBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+				if(tmpShortVersion != nil)
+					shortVersion = tmpShortVersion;
+				
+				NSString *versionFormat = DXLocalizedString(@"Version %@ (%@)",
+															@"Version number format string. First argument is short version and second is bundle version.");
+				[aboutWindowVersion setStringValue:[NSString stringWithFormat:versionFormat, shortVersion, bundleVersion]];
+			}
+			
+			if([[DXUtilities defaultUtilities] isLeopardOrLater])
+			{
+				// Only do this on Leopard and later. For unknown reasons, using this icon when the user is not logged in
+				// to DeliciousSafari causes graphic corruption in the menu's image (the graphic looks like a U instead of a folder).
+				NSBundle *coreTypesBundle = [NSBundle bundleWithPath:@"/System/Library/CoreServices/CoreTypes.bundle"];
+				
+				if(coreTypesBundle != nil)
+				{
+					NSString *path = [coreTypesBundle pathForImageResource:@"GenericFolderIcon"];
+					if(path)
+					{
+						folderImage = [[NSImage alloc] initWithContentsOfFile:path];
+						[folderImage setSize:NSMakeSize(16, 16)];
+					}
+				}
+			}
 			
 			if(folderImage == nil)
 			{
@@ -232,15 +235,14 @@ static const unsigned kMaxExtendedDescriptionLength = 1000;
 			
 			// The toolbar item should be displayed the first time this code is run. If the user removes
 			// the toolbar button, it should not be readded.
-            
+			NSString *kSafariToolbarConfigDictionaryKey = @"NSToolbar Configuration SafariToolbarIdentifier";
 			NSString *kSafariToolbarItemIdentifiersArrayKey = @"TB Item Identifiers";
 			NSString *kAddPostToolbarItemIdentifier = @"DXAddPostToolbarItemIdentifier";
 			if(![mDB hasAddedToolbarItemIdentifier:kAddPostToolbarItemIdentifier])
-			{
-                // The toolbar item has not been added, so add it for discoverability.
-                NSString *kSafariToolbarConfigDictionaryKey = @"NSToolbar Configuration BrowserToolbarIdentifier";
-				
-				NSMutableDictionary *toolbarConfigDictionary = [[[[NSUserDefaults standardUserDefaults] objectForKey:kSafariToolbarConfigDictionaryKey] mutableCopy] autorelease];
+			{				
+				// The toolbar item has not been added, so add it for discoverability.
+				NSMutableDictionary *toolbarConfigDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kSafariToolbarConfigDictionaryKey];
+				toolbarConfigDictionary = [[toolbarConfigDictionary mutableCopy] autorelease];
 				
 				if([toolbarConfigDictionary isKindOfClass:[NSDictionary class]])
 				{
@@ -365,6 +367,7 @@ static const unsigned kMaxExtendedDescriptionLength = 1000;
 	[mAPI release];
 	[mDB release];
 	[mDeliciousMenu release];
+	[nextTimeToAnnoy release];
 	
 	// Disconnect the datasource from the favorites NSTableView and free it.
 	[favoriteTagsTable setDataSource:nil];
@@ -378,7 +381,6 @@ static const unsigned kMaxExtendedDescriptionLength = 1000;
 	[self setSavedLastUpdatedTime:nil];
 	
 	[deliciousSafariBundle release];
-    [deliciousSafariBundleTopLevelObjects release];
 	
 	[itemsToImport release];
 	[self setImportTagsToAdd:nil];
@@ -910,7 +912,7 @@ static NSData* ExecuteCommand(NSString* command)
 	[postURL setStringValue:url];
 	[postName setStringValue:title];
 	[postNotes setString:notes];
-	[postNotesCharactersUsed setStringValue:[NSString stringWithFormat:@"%lu", (unsigned long)[notes length]]];
+	[postNotesCharactersUsed setStringValue:[NSString stringWithFormat:@"%d", [notes length]]];
 	[postTags setObjectValue:tags];
 	[doNotShare setState:shouldShare ? NSOffState : NSOnState];
 	[postWindow makeFirstResponder:postTags];
@@ -1070,7 +1072,7 @@ static NSData* ExecuteCommand(NSString* command)
 {
 	if([aNotification object] == postNotes)
 	{		
-		[postNotesCharactersUsed setStringValue:[NSString stringWithFormat:@"%lu", (unsigned long)[[postNotes string] length]]];
+		[postNotesCharactersUsed setStringValue:[NSString stringWithFormat:@"%u", [[postNotes string] length]]];
 	}	
 }
 
@@ -1176,7 +1178,7 @@ static NSData* ExecuteCommand(NSString* command)
 	
 	NSAlert *alert = [NSAlert alertWithMessageText:errorSavingBookmarkShouldDiscard
 									 defaultButton:review alternateButton:discard
-									   otherButton:nil informativeTextWithFormat:@"%@", deletedRecordsCannotBeRestored];
+									   otherButton:nil informativeTextWithFormat:deletedRecordsCannotBeRestored];
 	[alert setAlertStyle:NSCriticalAlertStyle];
 	
 	if([alert runModal] == NSAlertDefaultReturn)
@@ -1763,6 +1765,11 @@ static NSData* ExecuteCommand(NSString* command)
 
 @end
 
+
+static BOOL checkLicense(NSString *email, NSString *licenseKey)
+{	
+    return YES;
+}
 
 static void my_SCNetworkReachabilityCallBack(SCNetworkReachabilityRef target,
 											 SCNetworkConnectionFlags flags,

@@ -46,17 +46,13 @@ fi
 #
 
 # Make sure Xcode isn't running before incrementing the version.
-ps -Ao comm|grep Xcode.app/Contents/MacOS/Xcode > /dev/null
-if [ "$?" == 0 ]; then
+ps auxww|grep -v grep|grep Xcode > /dev/null
+if [ "$?" = 0 ]; then
     echo Xcode is running. Quit Xcode before running build.sh as this script will modify the DeliciousSafari Xcode project.
     exit 1
 fi
 
-xcrun agvtool next-version -all 
-if [ "$?" != 0 ]; then
-    echo "Couldn't find agvtool. Perhaps you need to install the Command Line Tools in Xcode."
-    exit 1
-fi
+/Developer/usr/bin/agvtool next-version -all || exit 1
 
 
 DSTROOT=/tmp/DeliciousSafari.dst
@@ -77,79 +73,49 @@ MOUNTED_DMG_PATH="/Volumes/$DMG_TITLE"
 # Clean out anything that doesn't belong.
 #
 echo Going to clean out build directories
-rm -rf build $DSTROOT $SRCROOT $IMGROOT $INSTALLER_PATH $DMG_PATH /tmp/FoundationDataObjects.dst FoundationDataObjects/build
+sudo rm -rf build $DSTROOT $SRCROOT $IMGROOT $INSTALLER_PATH $DMG_PATH /tmp/FoundationDataObjects.dst FoundationDataObjects/build
 echo Build directories cleaned out
 
 
 #
 # Build
 #
-echo ------------------
-echo Installing Sources
-echo ------------------
-xcodebuild -project DeliciousSafari.xcodeproj installsrc SRCROOT=$SRCROOT || exit 1
-
-echo ----------------
-echo Building Project
-echo ----------------
+sudo xcodebuild -project DeliciousSafari.xcodeproj installsrc SRCROOT=$SRCROOT || exit 1
 pushd $SRCROOT
-xcodebuild -project DeliciousSafari.xcodeproj -target all -configuration Release install || exit 1
+sudo xcodebuild -project DeliciousSafari.xcodeproj -target all -configuration Release install || exit 1
 popd
 
 #
 # Make installer
 #
-echo ----------
-echo Fixup Root
-echo ----------
-
-# Get rid of everything in /usr/local like ASHelper. Don't do everything automatically, otherwise
-# you might slightly delete something you need.
-DSTLOCAL="$DSTROOT/usr/local/bin"
-rm "$DSTLOCAL/ASHelper" || exit 1
-rm "$DSTLOCAL/DSUninstaller" || exit 1
-rmdir "$DSTROOT/usr/local/bin/" || exit 1
-rmdir "$DSTROOT/usr/local" || exit 1
-rmdir "$DSTROOT/usr" || exit 1
-
-
 echo ------------------
 echo Building Installer
 echo ------------------
-mkdir -p "$INSTALLER_PATH" || exit 1
+sudo mkdir -p "$INSTALLER_PATH" || exit 1
 pushd installer
-
-echo "Runing pkgbuild. Note you must be connected to Internet for this to work as it"
-echo "has to contact a time server in order to generate a trusted timestamp. See"
-echo "man pkgbuild for more info under SIGNED PACKAGES."
-pkgbuild --identifier "com.delicioussafari.DSInstaller" \
-    --scripts "$SRCROOT/installer/scripts" \
-    --sign "Developer ID Installer: Douglas Richardson (4L84QT8KA9)" \
-    --root "$DSTROOT" \
-    "$INSTALLER" || exit 1
+sudo /Developer/usr/bin/packagemaker -i com.delicioussafari --doc DeliciousSafari.pmdoc --no-recommend --out "$INSTALLER_PATH/DeliciousSafari.pkg" --verbose || exit 1
 popd
 
 #
 # Make the Disk Image Root
 #
-echo ---------------------------
+echo
 echo Building Disk Image Root...
-echo ---------------------------
-mkdir -p "$IMGROOT" || exit 1
-ditto "$INSTALLER" "$IMGROOT/$INSTALLER_PKG" || exit 1
-SetFile -a E "$IMGROOT/$INSTALLER_PKG" || exit 1
-ditto "$DSTROOT/Applications/Uninstall DeliciousSafari.app" "$IMGROOT/Uninstall DeliciousSafari.app" || exit 1
-cp installer/DMG-Background.png "$IMGROOT" || exit 1
-SetFile -a V "$IMGROOT/DMG-Background.png" || exit 1
-cp installer/DMG_DS_Store "$IMGROOT/.DS_Store" || exit 1
+sudo mkdir -p "$IMGROOT" || exit 1
+sudo ditto "$INSTALLER" "$IMGROOT/$INSTALLER_PKG" || exit 1
+sudo SetFile -a E "$IMGROOT/$INSTALLER_PKG" || exit 1
+sudo ditto "$DSTROOT/Applications/Uninstall DeliciousSafari.app" "$IMGROOT/Uninstall DeliciousSafari.app" || exit 1
+sudo cp installer/DMG-Background.png "$IMGROOT" || exit 1
+sudo SetFile -a V "$IMGROOT/DMG-Background.png" || exit 1
+sudo cp installer/DMG_DS_Store "$IMGROOT/.DS_Store" || exit 1
 
 #
 # Make Disk Image
 #
 echo
 echo Building Disk Image...
-mkdir -p "$DMG_PATH" || exit 1
-hdiutil create -srcfolder "$IMGROOT" -fs HFS+ -volname "DeliciousSafari"  "$DMG" || exit 1
+sudo mkdir -p "$DMG_PATH" || exit 1
+sudo hdiutil create -srcfolder "$IMGROOT" -fs HFS+ -volname "DeliciousSafari"  "$DMG" || exit 1
 
 
 echo Successfully built DeliciousSafari

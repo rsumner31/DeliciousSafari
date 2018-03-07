@@ -1,11 +1,4 @@
 #!/bin/bash
 
-set -e
-
-SRC=DerivedData/DeliciousSafari/Build/Products/Debug/DeliciousSafari.bundle
-DST_FOLDER=/Library/InputManagers/DeliciousSafari
-
-sudo rm -rf "$DST_FOLDER/DeliciousSafari.bundle"
-sudo cp -R "$SRC" "$DST_FOLDER"
-
-echo OK
+sudo cp build/Debug/DeliciousSafari.bundle/Contents/MacOS/DeliciousSafari /Library/InputManagers/DeliciousSafari/DeliciousSafari.bundle/Contents/MacOS/DeliciousSafari
+sudo cp -R DXExtenderResources.nib /Library/InputManagers/DeliciousSafari/DeliciousSafari.bundle/Contents/Resources

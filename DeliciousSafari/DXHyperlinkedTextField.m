@@ -80,7 +80,7 @@ hyperlinkFromString(NSString* inString)
 	
     // next make the text appear with an underline
     [attrString addAttribute:NSUnderlineStyleAttributeName
-					   value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
+					   value:[NSNumber numberWithInt:NSSingleUnderlineStyle]
 					   range:range];
 	
 	[attrString addAttribute:NSFontAttributeName value:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] range:range];

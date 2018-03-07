@@ -29,7 +29,9 @@
 	NSImage *toolbarItemImage;
 	SEL afterLoginCallback;
 	NSBundle *deliciousSafariBundle;
-    NSArray* deliciousSafariBundleTopLevelObjects;
+	
+	BOOL isLicenseValid;
+	NSDate *nextTimeToAnnoy;
 	
 	DXTagMenuController *mAllTagsController;
 	DXTagMenuController *mFavoriteTagsController;

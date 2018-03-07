@@ -131,6 +131,8 @@ static NSString* folderNameToTag(NSString *folderName)
 
 -(void)loadSafariBookmarks
 {
+	[safariBookmarksDict release];
+	
 	NSString *bookmarksPlistPath = [@"~/Library/Safari/Bookmarks.plist" stringByExpandingTildeInPath];
 	NSData *plistData = [NSData dataWithContentsOfFile:bookmarksPlistPath];
 	if(plistData == nil)
@@ -147,8 +149,7 @@ static NSString* folderNameToTag(NSString *folderName)
 		NSLog(@"Error reading bookmarks '%@'. Reason: %@", bookmarksPlistPath, errorString);
 		[errorString release];
 	}
-
-	[safariBookmarksDict release];
+	
 	safariBookmarksDict = [plistDictionary retain];
 	
 bail:

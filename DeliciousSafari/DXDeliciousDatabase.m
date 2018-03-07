@@ -23,6 +23,8 @@ static NSString* const kTagsKeyOBSOLETE = @"tags";
 static NSString* const kLastUpdatedKey = @"lastUpdated";
 static NSString* const kFavoriteTagsKey = @"favoriteTags";
 static NSString* const kUsernameKey = @"username";
+static NSString* const kRegistrationEmailAddress = @"registrationEmailAddress";
+static NSString* const kRegistrationLicenseKey = @"registrationLicenseKey";
 static NSString* const kFaviconDatabaseNextRebuildKey = @"FaviconDatabaseNextRebuildDate";
 static NSString* const kFaviconHostSkipKey = @"FaviconHostSkipListKey";
 static NSString* const kShouldShareByDefaultKey = @"ShouldShareByDefault";
@@ -636,9 +638,6 @@ bail:
 		}
 		@catch(NSException *e)
 		{
-            // I've seen some failures here when delicious gives me two bookmarks with the same URL.
-            // delicious.com doesn't let you create 2 links with the same URL, so I'm not sure
-            // how this happened. See the cocos2d bookmark under mofochickamo's account to see what I mean.
 			NSLog(@"[DXDeliciousDatabase addPostsToDatabaseInternal:] - Insert bookmark failed %@", e);
 			continue;
 		}
@@ -936,7 +935,7 @@ bail:
 			
 			[strError release]; // Docs say you own this (unlike NSError in dataWithContentsOfFile:options:error: call above), so release it.
 			
-			if(mDBCache != nil && ![mDBCache isKindOfClass:[NSDictionary class]])
+			if(mDBCache != nil && [mDBCache isKindOfClass:[NSDictionary dictionary]])
 				mDBCache = nil;
 			
 			[mDBCache retain];
@@ -1148,6 +1147,26 @@ bail:
 -(BOOL)isLoggedIn
 {
 	return [[self username] length] > 0;
+}
+
+-(NSString*)registrationEmailAddress
+{
+	return [self stringForKey:kRegistrationEmailAddress];
+}
+
+-(void)setRegistrationEmailAddress:(NSString*)emailAddress
+{
+	[self setString:emailAddress forKey:kRegistrationEmailAddress];
+}
+
+-(NSString*)registrationLicenseKey
+{
+	return [self stringForKey:kRegistrationLicenseKey];
+}
+
+-(void)setRegistrationLicenseKey:(NSString*)licenseKey
+{
+	[self setString:licenseKey forKey:kRegistrationLicenseKey];
 }
 
 #ifdef DELICIOUSSAFARI_PLUGIN_TARGET
@@ -1398,7 +1417,7 @@ bail:
 	
 	@try {
 		id <FDOCommand> tagQuery = [mDBConnection newCommand];
-		[tagQuery prepare:[NSString stringWithFormat:@"SELECT name_display FROM tag WHERE name_lower LIKE ?1 LIMIT %lu", (unsigned long)limit]];
+		[tagQuery prepare:[NSString stringWithFormat:@"SELECT name_display FROM tag WHERE name_lower LIKE ?1 LIMIT %u", limit]];
 		[tagQuery bindString:[searchString stringByAppendingString:@"%"] toParameterNumber:1];
 		id <FDORecordSet> recordSet = [tagQuery executeQuery];
 		
@@ -1422,7 +1441,7 @@ bail:
 	
 	@try {			
 		id <FDOCommand> bookmarkQuery = [mDBConnection newCommand];
-		[bookmarkQuery prepare:[NSString stringWithFormat:@"SELECT * FROM bookmark WHERE title LIKE ?1 LIMIT %lu", (unsigned long)limit]];
+		[bookmarkQuery prepare:[NSString stringWithFormat:@"SELECT * FROM bookmark WHERE title LIKE ?1 LIMIT %u", limit]];
 		[bookmarkQuery bindString:[NSString stringWithFormat:@"%%%@%%", searchString] toParameterNumber:1];
 		id <FDORecordSet> recordSet = [bookmarkQuery executeQuery];
 		result = [self postsArrayForRecordSet:recordSet];		

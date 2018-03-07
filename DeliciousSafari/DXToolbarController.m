@@ -12,7 +12,7 @@
 
 static DXToolbarController* dxToolbarController = nil;
 
-static NSString *kDXSafariBrowserWindowToolbarConfigurationKey = @"values.NSToolbar Configuration BrowserToolbarIdentifier";
+static NSString *kDXSafariBrowserWindowToolbarConfigurationKey = @"values.NSToolbar Configuration BrowserWindowToolbarIdentifier";
 
 static NSToolbarItem*
 dxToolbarItemForItemIdentifierWillBeInsertedIntoToolbar(id self, SEL _cmd, NSToolbar* toolbar, NSString* itemIdentifier, BOOL flag);
@@ -21,8 +21,6 @@ static NSArray*
 dxToolbarAllowedItemIdentifiers(id self, SEL _cmd, NSToolbar* toolbar);
 
 static NSString* MakeToolbarItemPositionKey(NSToolbarItem* toolbarItem);
-
-static NSString* dxToolbarConfigChangedObserverContext = nil;
 
 @interface DXToolbarController (private)
 -(NSArray*)itemIdentifiers;
@@ -93,7 +91,7 @@ static NSString* dxToolbarConfigChangedObserverContext = nil;
 		[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
 																  forKeyPath:kDXSafariBrowserWindowToolbarConfigurationKey
 																	 options:NSKeyValueObservingOptionNew
-																	 context:&dxToolbarConfigChangedObserverContext];
+																	 context:nil];
 	}
 	
 	return self;
@@ -203,20 +201,15 @@ static NSString* dxToolbarConfigChangedObserverContext = nil;
 {
 	//static int x; // The changing x makes sure this shows up in console so syslog doesn't collapse it into "Previous message repeated x times...".
 	//NSLog(@"Observed change: %@, %@, %d", keyPath, change, ++x);
-    
-    if (context == &dxToolbarConfigChangedObserverContext)
-    {
-        // Update the toolbar item positions in user defaults
-        for(NSString *itemKey in mItemsDictionary)
-        {
-            NSToolbarItem *item = [mItemsDictionary objectForKey:itemKey];
-            NSUInteger index = [[mBrowserWindowToolbar items] indexOfObject:item];
-            NSNumber *position = [NSNumber numberWithInteger:(index == NSNotFound) ? -1 : (NSInteger)index];
-            [[NSUserDefaults standardUserDefaults] setObject:position forKey:MakeToolbarItemPositionKey(item)];
-        }
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
+	
+	// Update the toolbar item positions in user defaults
+	for(NSString *itemKey in mItemsDictionary)
+	{
+		NSToolbarItem *item = [mItemsDictionary objectForKey:itemKey];
+		NSUInteger index = [[mBrowserWindowToolbar items] indexOfObject:item];
+		NSNumber *position = [NSNumber numberWithInteger:(index == NSNotFound) ? -1 : (NSInteger)index];
+		[[NSUserDefaults standardUserDefaults] setObject:position forKey:MakeToolbarItemPositionKey(item)];
+	}
 }
 
 @end
@@ -226,17 +219,21 @@ static NSString* dxToolbarConfigChangedObserverContext = nil;
 // calling [self y] actually calls the original [self x]. This makes swizzling useful for playing nicely with multiple
 // plug-ins, because you can keep adding to the swizzle chain.
 
-@interface NSObject (makeWarningsGoAway)
-- (NSToolbarItem*)dxToolbar:(NSToolbar*)toolbar itemForItemIdentifier:(NSString*)itemIdentifier willBeInsertedIntoToolbar:(BOOL)flag;
-- (NSArray*)dxToolbarAllowedItemIdentifiers:(NSToolbar*)toolbar;
-@end
-
 static NSToolbarItem*
 dxToolbarItemForItemIdentifierWillBeInsertedIntoToolbar(id self, SEL _cmd, NSToolbar* toolbar, NSString* itemIdentifier, BOOL flag)
 {
 	NSToolbarItem *result = [dxToolbarController itemForIdentifier:itemIdentifier];
 		
-	if(result == nil)
+	if(result != nil)
+	{
+		// On Tiger, if a copy of the toolbar item is not made then our toolbar item will get destroyed if the following happens:
+		// 1. A second Safari window is created (an ignored exception will actually occur here)
+		// 2. A Safari window is closed.
+		// RESULT: The remaining Safari windows lose their DeliciousSafari toolbar button and Command keys stop working.
+		if(![[DXUtilities defaultUtilities] isLeopardOrLater])
+			result = [[result copy] autorelease];
+	}
+	else
 		result = [self dxToolbar:toolbar itemForItemIdentifier:itemIdentifier willBeInsertedIntoToolbar:flag];
 	
 	return result;
